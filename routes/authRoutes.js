@@ -1,17 +1,20 @@
+// routes/authRoutes.js
+
 const express = require('express');
-const { register, login, getUserInfo } = require('../controllers/authController');
+const router = express.Router();
+const authController = require('../controllers/authController');
 const authMiddleware = require('../middlewares/authMiddleware');
 
-const router = express.Router();
+// Route for user registration
+router.post('/register', authController.registerUser);
 
-// Register a new user
-router.post('/register', register);
+// Route for user login
+router.post('/login', authController.loginUser);
 
-// Login and get JWT token
-router.post('/login', login);
-
-// Get user info (protected route)
-router.get('/user', authMiddleware, getUserInfo);
+// Route for getting user info (protected route)
+router.get('/user', authMiddleware.verifyToken, authController.getUserInfo);
 
 module.exports = router;
+
+
 
